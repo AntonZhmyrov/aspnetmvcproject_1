@@ -1,0 +1,52 @@
+﻿@model IEnumerable<AspNetMvcDi_1.Models.Account>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <script src="~/Scripts/jquery-3.0.0.min.js"></script>
+    <title>Index</title>
+</head>
+<body>
+<div>
+    <h3>User Accounts</h3>
+
+    <ul id="list">
+            
+    </ul>
+
+    <input type="button" id="next" value="Next"/>
+
+    <script>
+        var skip = 0;
+        var amount = 2;
+
+        $(document).ready(function() {
+            $("#next").click(function() {
+                $.ajax({
+                    url: '@Url.Action("GetAccounts", "Home", "/")',
+                    data: { "skip": skip, "amount": amount },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (result) {
+                        for (var i = 0; i < result.length; i++)
+                            {
+                                $("#list").append('<li>' + '<p>Id: ' + result[i].Id + '</p>');
+                                $("#list").append('<p>Login' + result[i].Login + '</p>');
+                                $("#list").append('<p>Email: ' + result[i].Email + '</p>');
+                                $("#list").append('<p>Password' + result[i].Password + '</p></li>');
+                            }
+                    }
+                });
+                skip += amount;
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
